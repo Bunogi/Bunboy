@@ -3,6 +3,7 @@
 #include "cpu.hpp"
 #include "memory.hpp"
 #include "opcodes.hpp"
+#include "gpu.hpp"
 
 namespace GB {
 	extern void reset();

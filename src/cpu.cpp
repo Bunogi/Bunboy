@@ -118,6 +118,12 @@ namespace GB {
 				regY++;
 		}
 
+		void INCaddr(u16 address) {
+			u8 value = RAM::readByte(address);
+			INC(value);
+			RAM::writeByte(address, value);
+		}
+
 		void DEC(u8& value) {
 			u8 result = value - 1;
 			u8 carryFlag = F & Flags::Carry;
@@ -134,7 +140,11 @@ namespace GB {
 			if (regX == 0xFF) //regX was 0, underflow
 				regY--;
 		}
-
-
+		
+		void DECaddr(u16 address) {
+			u8 value = RAM::readByte(address);
+			DEC(value);
+			RAM::writeByte(address, value);
+		}
 	}
 }

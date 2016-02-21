@@ -36,7 +36,9 @@ namespace GB {
 		extern void CP(u8 value);
 		extern void INC(u8& value);
 		extern void INC16(u8& regX, u8& regY);
+		extern void INCaddr(u16 address);
 		extern void DEC(u8& value);
 		extern void DEC16(u8& regX, u8& regY); 
+		extern void DECaddr(u16 address);
 	}
 }

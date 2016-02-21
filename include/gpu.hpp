@@ -8,5 +8,7 @@ namespace GB {
 		extern const sf::Color color1; //Color with the value 1
 		extern const sf::Color color2; //...
 		extern const sf::Color color3;
+
+		extern void renderScreen();
 	}
 }

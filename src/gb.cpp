@@ -39,8 +39,7 @@ FuncPointer GB::CPU::opcodes[0x100] = {
 
 u8 GB::CPU::A = 0, GB::CPU::B = 0, GB::CPU::C = 0, GB::CPU::D = 0, GB::CPU::E = 0, GB::CPU::F = 0, GB::CPU::H = 0, GB::CPU::L = 0;
 u16 GB::CPU::SP = 0, GB::CPU::PC = 0;
-u8 GB::RAM::ram[0x2000] = {}, GB::RAM::eram[0x2000] = {}, GB::RAM::vram[0x2000] = {}, GB::RAM::rom0[0x4000] = {}, GB::RAM::rom1[0x4000] = {};
-u8 GB::RAM::oam[0xA0] = {}, GB::RAM::io[0x4C] = {}, GB::RAM::zram[0x7F] = {};
+u8 GB::RAM::memory[0x10000], GB::RAM::rom[0x200000], GB::RAM::ramBank[0x8000];
 
 const int maxCycles = 69905; //CPU runs at 4194304Hz, which divided by 60 gives the cycles per frame (69905)
 
@@ -50,8 +49,10 @@ namespace GB {
 		int cycles = 0;
 		
 		while (cycles < maxCycles) {
-			
+			int thisCycle = CPU::tick();
+			cycles += thisCycle;
 		}
+		//Video::renderScreen();
 	}
 	void reset() {	 //Run the gameboy powerup sequence
 		using namespace GB::CPU; 
@@ -59,16 +60,12 @@ namespace GB {
 		A = F = 0;
 		B = 0; C = 0x13; //BC = $0013
 		D = 0; E = 0xD8; //DE = $00D8
+		H = 1; L = 0x4D; //HL = $014D
 		PC = 0x100;
 		SP = 0xFFFE;
-		std::memset(ram, 0, sizeof ram);
-		std::memset(eram, 0, sizeof eram);
-		std::memset(vram, 0, sizeof vram);
-		std::memset(rom0, 0, sizeof rom0);
-		std::memset(rom1, 0, sizeof rom1);
-		std::memset(oam, 0, sizeof oam);
-		std::memset(io, 0, sizeof io);
-		std::memset(zram, 0, sizeof zram);
+		std::memset(&memory, 0, sizeof memory);
+		std::memset(&rom, 0, sizeof rom);
+		std::memset(&ramBank, 0, sizeof ramBank);
 		writeByte(0xFF10, 0x80);
 		writeByte(0xFF11, 0xBF);
 		writeByte(0xFF12, 0xF3);
