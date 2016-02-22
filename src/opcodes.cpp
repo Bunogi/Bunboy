@@ -21,7 +21,7 @@ namespace GB {
 		int opcode03() { INC16(B, C);                     return 8;  } //INC BC
 		int opcode04() { INC(B);                          return 4;  } //INC B
 		int opcode05() { DEC(B);                          return 4;  } //DEC B
-		int opcode06() { writeByte(PC++, B);              return 8;  }  //LD B, d8. 
+		int opcode06() { writeByte(PC++, B);              return 8;  }  //LD B, d8.
 		int opcode07() { unkownOpcode();                             }
 		int opcode08() { writeShort(readShort(PC++), SP); return 20; } //LD (nn), SP
 		int opcode09() { ADD_HL(BC());                    return 8;  } //ADD HL, BC
@@ -56,7 +56,7 @@ namespace GB {
 		int opcode26() { writeByte(PC++, H);              return 8;  } //LD H, d8
 		int opcode27() { unkownOpcode();                             }
 		int opcode28() { unkownOpcode();                             }
-		int opcode29() { ADD_HL(HL());                               } //ADD HL, HL
+		int opcode29() { ADD_HL(HL());                    return 8;  } //ADD HL, HL
 		int opcode2A() { A = readByte(HL()); INC16(H, L); return 8;  } //LD A, (HL+)
 		int opcode2B() { DEC16(H, L);                     return 8;  } //DEC HL
 		int opcode2C() { INC(L);                          return 4;  } //INC L
@@ -108,7 +108,7 @@ namespace GB {
 		int opcode5A() { E = D;                           return 4;  } //LD E, D
 		int opcode5B() { /* E = E; */                     return 4;  } //LD E, E
 		int opcode5C() { E = H;                           return 4;  } //LD E, H
-		int opcode5D() { E = L;                           return 4;  } //LD E, L 
+		int opcode5D() { E = L;                           return 4;  } //LD E, L
 		int opcode5E() { E = readByte(HL());              return 8;  } //LD E, (HL)
 		int opcode5F() { E = A;                           return 4;  } //LD E, A
 		int opcode60() { H = B;                           return 4;  } //LD H, B
@@ -133,7 +133,7 @@ namespace GB {
 		int opcode73() { writeByte(HL(), E);              return 8;  } //LD (HL), E
 		int opcode74() { writeByte(HL(), H);              return 8;  } //LD (HL), H
 		int opcode75() { writeByte(HL(), L);              return 8;  } //LD (HL), L
-		int opcode76() { unkownOpcode();                             } 
+		int opcode76() { unkownOpcode();                             }
 		int opcode77() { writeByte(HL(), A);              return 8;  } //LD (HL), A
 		int opcode78() { A = B;                           return 4;  } //LD A, B
 		int opcode79() { A = C;                           return 4;  } //LD A, C
@@ -240,14 +240,14 @@ namespace GB {
 		int opcodeDE() { A = SBC(A, readByte(PC++));      return 8;  } //SBC A, d8
 		int opcodeDF() { unkownOpcode();                             }
 		int opcodeE0() { writeByte(0xFF00 + readByte(PC++), A); return 12; } //LDH (n), A
-		int opcodeE1() { set16Reg(H, L, readShortStack());           } //POP HL
+		int opcodeE1() { set16Reg(H, L, readShortStack());return 12; } //POP HL
 		int opcodeE2() { writeByte(0xFF00 + C, A);        return 8;  } //LD ($FF00 + C), A
 		int opcodeE3() { unkownOpcode();                             }
 		int opcodeE4() { unkownOpcode();                             }
 		int opcodeE5() { writeShortStack(HL());           return 16; } //PUSH HL
 		int opcodeE6() { AND(readByte(PC++));             return 8;  } //AND d8
 		int opcodeE7() { unkownOpcode();                             }
-		int opcodeE8() { 
+		int opcodeE8() {
 			//Same as opcode F8, but store result in SP instead
 			F = 0;
 			i8 n = static_cast<i8>(readByte(PC++));
@@ -275,7 +275,7 @@ namespace GB {
 		int opcodeF5() { writeShortStack(AF());           return 16; } //PUSH AF
 		int opcodeF6() { OR(readByte(PC++));              return 8;  } //OR d8
 		int opcodeF7() { unkownOpcode();                             }
-		int opcodeF8() { 
+		int opcodeF8() {
 			//Put SP + n effective address into HL
 			F = 0;
 			i8 n = static_cast<i8>(readByte(PC++));

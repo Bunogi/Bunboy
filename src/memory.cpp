@@ -14,6 +14,10 @@ namespace GB {
 		bool ramEnabled = false;
 		bool romBanking = false;
 
+		unsigned timerCycles = timerSpeeds[0];
+
+		u16 dividerCycles = 0;
+
 		u8 readByte(u16 address) {
 			if (address < 0x4000)
 				return rom[address];
@@ -21,7 +25,7 @@ namespace GB {
 				return rom[(address - 0x4000) + currentRomBank * 0x4000]; //Each rom bank is $4000 bytes in size
 			else if (address >= 0xA000 and address <= 0xBFFF) //Reading from RAM bank
 				return ramBank[(address - 0xA000) + currentRamBank * 0x2000]; //Each RAM Bank is $2000 bytes in size
-			else 
+			else
 				return memory[address];
 		}
 
@@ -29,13 +33,19 @@ namespace GB {
 			if (address < 0x8000)
 				changeBanks(address, value);
 			else if (address >= 0xA000 and address < 0xC000) {
-				if (ramEnabled) 
-					ramBank[(address - 0xA00) + currentRamBank * 0x2000] = value; 
+				if (ramEnabled)
+					ramBank[(address - 0xA00) + currentRamBank * 0x2000] = value;
 			}
 			else if (address >= 0xE000 and address < 0xFE00) { //Echo of internal ram
 				memory[address] = value;
 				writeByte(address - 0x2000, value);
 			}
+			else if (address == TimerController) { //Changing timer settings
+				memory[TimerController] = value;
+				timerCycles = timerSpeeds[value & 3]; //last two bits decide the speed
+			}
+			else if (address == DividerRegister)
+				memory[DividerRegister] = 0;
 			else
 				memory[address] = value;
 		}
@@ -47,7 +57,7 @@ namespace GB {
 		}
 
 		u16 readShortStack() {
-			CPU::SP += 2; 
+			CPU::SP += 2;
 			return readShort(CPU::SP);
 		}
 
@@ -84,10 +94,29 @@ namespace GB {
 					changeRomRamMode(value);
 		}
 
+		bool isTimerEnabled() {
+			return readByte(TimerController) & 4; //0b0100
+		}
+
+		void updateTimers(unsigned cycles) {
+			if (not isTimerEnabled())
+				return;
+			if (timerCycles - cycles > timerCycles) {
+				timerCycles = timerSpeeds[readByte(TimerController) & 3];
+				if (readByte(TimerLocation) + 1 == 0xFF) {
+					writeByte(TimerModulator, readByte(TimerLocation));
+					#warning "Interrupts not enabled, timers won't work properly"
+					//CPU::sendInterrupt(/* Timer interrupt */);
+				}
+				else
+					writeByte(TimerLocation, readByte(TimerLocation) + 1);
+			}
+		}
+
 		void enableRamBank(u16 address, u8 value) {
 			if (bankType == RomBankType::MBC2 and (address & 0x10) == 1)
 				return;
-		
+
 			u8 test = value & 0x0F;
 			if (test == 0xA)
 				ramEnabled = true;
@@ -140,7 +169,7 @@ namespace GB {
 			fileStream.read(buffer, length);
 			for (int i = 0; i < length; i++)
 				RAM::rom[i] = buffer[i];
-			
+
 			delete[] buffer;
 			fileStream.close();
 

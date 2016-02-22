@@ -28,7 +28,7 @@ namespace GB {
 				setFlag(Flags::Zero);
 			if (result > 0xFF)
 				setFlag(Flags::Carry);
-			if ((x & 0xF) + (y & 0xF) > 0xF) 
+			if ((x & 0xF) + (y & 0xF) > 0xF)
 				setFlag(Flags::HalfCarry);
 			return static_cast<u8>(result);
 		}
@@ -41,21 +41,21 @@ namespace GB {
 
 		u8 subByte(u8 x, u8 y) {
 			F = Flags::Subtract;
-			unsigned result = x - y; 
+			unsigned result = x - y;
 
 			if (result == 0)
 				setFlag(Flags::Zero);
-			if ((x & 0xF) - (y & 0xF) < 0) 
-				setFlag(Flags::HalfCarry); 
+			if ((x & 0xF) - (y & 0xF) < 0)
+				setFlag(Flags::HalfCarry);
 			if (x > y)
 				setFlag(Flags::Carry);
-			return static_cast<u8>(result); 
+			return static_cast<u8>(result);
 		}
 
 		u8 SBC(u8 x, u8 y) {
 			if (F & Flags::Carry)
 				y++;
-			return subByte(x, y); 
+			return subByte(x, y);
 		}
 
 		void ADD_HL(u16 value) {
@@ -67,7 +67,7 @@ namespace GB {
 			if (result > 0xFFFF)
 				setFlag(Flags::Carry);
 			F |= zeroFlag;
-			set16Reg(H, L, static_cast<u16>(result)); 
+			set16Reg(H, L, static_cast<u16>(result));
 		}
 
 		void set16Reg(u8& regx, u8& regy, u16 value) {
@@ -104,7 +104,7 @@ namespace GB {
 			u8 result = value + 1;
 			u8 carryFlag = F & Flags::Carry;
 			F = 0;
-			if (result == 0) 
+			if (result == 0)
 				setFlag(Flags::Zero);
 			if ((value & 0x0F) == 0x0F)
 				setFlag(Flags::HalfCarry);
@@ -140,7 +140,7 @@ namespace GB {
 			if (regX == 0xFF) //regX was 0, underflow
 				regY--;
 		}
-		
+
 		void DECaddr(u16 address) {
 			u8 value = RAM::readByte(address);
 			DEC(value);
