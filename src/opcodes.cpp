@@ -15,70 +15,70 @@ namespace GB {
 		using namespace GB::CPU;
 		using namespace GB::RAM;
 		auto unkownOpcode = [](){ std::cout << "Unknown opcode. Terminating.\n"; exit(1); };
-		int opcode00() {                                       return 4;  } //NOP
-		int opcode01() { registers.BC = readShort(PC++);       return 12; } //LD BC, nn
-		int opcode02() { registers.A = readByte(registers.BC); return 8;  } //LD (BC), A
-		int opcode03() { registers.BC++;                    return 8;  } //INC BC
-		int opcode04() { INC(registers.B);                     return 4;  } //INC B
-		int opcode05() { DEC(registers.B);                     return 4;  } //DEC B
-		int opcode06() { writeByte(PC++, registers.B);         return 8;  }  //LD B, d8.
-		int opcode07() { unkownOpcode();                                  }
-		int opcode08() { writeShort(readShort(PC++), SP);      return 20; } //LD (nn), SP
-		int opcode09() { ADD_HL(registers.BC);                 return 8;  } //ADD HL, BC
-		int opcode0A() { writeByte(registers.BC, registers.A); return 8;  } //LD A, (BC)
-		int opcode0B() { registers.BC--;                    return 8;  } //DEC BC
-		int opcode0C() { INC(registers.C);                     return 4;  } //INC C
-		int opcode0D() { DEC(registers.C);                     return 4;  } //DEC C
-		int opcode0E() { writeByte(PC++, registers.C);         return 8;  } //LD C, d8
-		int opcode0F() { unkownOpcode();                                  }
-		int opcode10() { unkownOpcode();                                  }
-		int opcode11() { registers.DE = readShort(PC++);       return 12; } //LD DE, nn
-		int opcode12() { registers.A = readByte(registers.DE); return 8;  } //LD (DE), A
-		int opcode13() { registers.DE++;                    return 8;  } //INC DE
-		int opcode14() { INC(registers.D);                     return 4;  } //INC D
-		int opcode15() { DEC(registers.D);                     return 4;  } //DEC D
-		int opcode16() { writeByte(PC++, registers.D);         return 8;  } //LD D, d8
-		int opcode17() { unkownOpcode();                                  }
-		int opcode18() { unkownOpcode();                                  }
-		int opcode19() { ADD_HL(registers.DE);                 return 8;  } //ADD HL, DE
-		int opcode1A() { writeByte(registers.DE, registers.A); return 8;  } //LD A, (DE)
-		int opcode1B() { registers.DE++;                    return 8;  } //DEC DE
-		int opcode1C() { INC(registers.E);                     return 4;  } //INC E
-		int opcode1D() { DEC(registers.E);                          return 4;  } //DEC E
-		int opcode1E() { writeByte(PC++, registers.E);              return 8;  } //LD E, d8
-		int opcode1F() { unkownOpcode();                             }
-		int opcode20() { unkownOpcode();                             }
-		int opcode21() { registers.HL = readShort(PC++);  return 12; } //LD HL, nn
-		int opcode22() { writeByte(registers.HL, registers.A); registers.HL++; return 8;  } //LD (HL+, A)
-		int opcode23() { registers.HL++;                     return 8;  } //INC HL
-		int opcode24() { INC(registers.H);                          return 4;  } //INC H
-		int opcode25() { DEC(registers.H);                          return 4;  } //DEC H
-		int opcode26() { writeByte(PC++, registers.H);              return 8;  } //LD H, d8
-		int opcode27() { unkownOpcode();                             }
-		int opcode28() { unkownOpcode();                             }
-		int opcode29() { ADD_HL(registers.HL);                    return 8;  } //ADD HL, HL
-		int opcode2A() { registers.A = readByte(registers.HL); registers.HL++; return 8;  } //LD A, (HL+)
-		int opcode2B() { registers.HL--;                     return 8;  } //DEC HL
-		int opcode2C() { INC(registers.L);                          return 4;  } //INC L
-		int opcode2D() { DEC(registers.L);                          return 4;  } //DEC L
-		int opcode2E() { writeByte(PC++, registers.L);              return 8;  } //LD E, d8
-		int opcode2F() { unkownOpcode();                             }
-		int opcode30() { unkownOpcode();                             }
-		int opcode31() { SP = readShort(PC++);            return 12; } //LD SP, nn
-		int opcode32() { writeByte(registers.HL, registers.A); registers.HL++; return 12; } //LD (HL-), A
-		int opcode33() { SP++;                            return 8;  } //INC SP
-		int opcode34() { INCaddr(registers.HL);           return 12; } //INC (HL)
-		int opcode35() { DECaddr(registers.HL);           return 12; } //DEC (HL)
-		int opcode36() { writeByte(registers.HL, PC++);        return 12; } //LD (HL), d8
-		int opcode37() { unkownOpcode();                             }
-		int opcode38() { unkownOpcode();                             }
-		int opcode39() { ADD_HL(SP);                      return 8;  } //ADD HL, SP
-		int opcode3A() { registers.A = readByte(registers.HL); registers.HL--; return 8;  } //LD A, (HL-)
-		int opcode3B() { SP--;                            return 8;  } //DEC SP
-		int opcode3C() { INC(registers.A);                          return 4;  } //INC A
-		int opcode3D() { DEC(registers.A);                          return 4;  } //DEC A
-		int opcode3E() { unkownOpcode();                             }
-		int opcode3F() { unkownOpcode();                             }
+		int opcode00() {                                                              return 4;  } //NOP
+		int opcode01() { registers.BC = readShort(PC++);                              return 12; } //LD BC, nn
+		int opcode02() { registers.A = readByte(registers.BC);                        return 8;  } //LD (BC), A
+		int opcode03() { registers.BC++;                                              return 8;  } //INC BC
+		int opcode04() { INC(registers.B);                                            return 4;  } //INC B
+		int opcode05() { DEC(registers.B);                                            return 4;  } //DEC B
+		int opcode06() { writeByte(PC++, registers.B);                                return 8;  }  //LD B, d8.
+		int opcode07() { unkownOpcode();                                                         }
+		int opcode08() { writeShort(readShort(PC++), SP);                             return 20; } //LD (nn), SP
+		int opcode09() { ADD_HL(registers.BC);                                        return 8;  } //ADD HL, BC
+		int opcode0A() { writeByte(registers.BC, registers.A);                        return 8;  } //LD A, (BC)
+		int opcode0B() { registers.BC--;                                              return 8;  } //DEC BC
+		int opcode0C() { INC(registers.C);                                            return 4;  } //INC C
+		int opcode0D() { DEC(registers.C);                                            return 4;  } //DEC C
+		int opcode0E() { writeByte(PC++, registers.C);                                return 8;  } //LD C, d8
+		int opcode0F() { unkownOpcode();                                                         }
+		int opcode10() { unkownOpcode();                                                         }
+		int opcode11() { registers.DE = readShort(PC++);                              return 12; } //LD DE, nn
+		int opcode12() { registers.A = readByte(registers.DE);                        return 8;  } //LD (DE), A
+		int opcode13() { registers.DE++;                                              return 8;  } //INC DE
+		int opcode14() { INC(registers.D);                                            return 4;  } //INC D
+		int opcode15() { DEC(registers.D);                                            return 4;  } //DEC D
+		int opcode16() { writeByte(PC++, registers.D);                                return 8;  } //LD D, d8
+		int opcode17() { unkownOpcode();                                                         }
+		int opcode18() { unkownOpcode();                                                         }
+		int opcode19() { ADD_HL(registers.DE);                                        return 8;  } //ADD HL, DE
+		int opcode1A() { writeByte(registers.DE, registers.A);                        return 8;  } //LD A, (DE)
+		int opcode1B() { registers.DE++;                                              return 8;  } //DEC DE
+		int opcode1C() { INC(registers.E);                                            return 4;  } //INC E
+		int opcode1D() { DEC(registers.E);                                            return 4;  } //DEC E
+		int opcode1E() { writeByte(PC++, registers.E);                                return 8;  } //LD E, d8
+		int opcode1F() { unkownOpcode();                                                         }
+		int opcode20() { unkownOpcode();                                                         }
+		int opcode21() { registers.HL = readShort(PC++);                              return 12; } //LD HL, nn
+		int opcode22() { writeByte(registers.HL, registers.A); registers.HL++;        return 8;  } //LD (HL+, A)
+		int opcode23() { registers.HL++;                                              return 8;  } //INC HL
+		int opcode24() { INC(registers.H);                                            return 4;  } //INC H
+		int opcode25() { DEC(registers.H);                                            return 4;  } //DEC H
+		int opcode26() { writeByte(PC++, registers.H);                                return 8;  } //LD H, d8
+		int opcode27() { unkownOpcode();                                                         }
+		int opcode28() { unkownOpcode();                                                         }
+		int opcode29() { ADD_HL(registers.HL);                                        return 8;  } //ADD HL, HL
+		int opcode2A() { registers.A = readByte(registers.HL); registers.HL++;        return 8;  } //LD A, (HL+)
+		int opcode2B() { registers.HL--;                                              return 8;  } //DEC HL
+		int opcode2C() { INC(registers.L);                                            return 4;  } //INC L
+		int opcode2D() { DEC(registers.L);                                            return 4;  } //DEC L
+		int opcode2E() { writeByte(PC++, registers.L);                                return 8;  } //LD E, d8
+		int opcode2F() { unkownOpcode();                                                         }
+		int opcode30() { unkownOpcode();                                                         }
+		int opcode31() { SP = readShort(PC++);                                        return 12; } //LD SP, nn
+		int opcode32() { writeByte(registers.HL, registers.A); registers.HL++;        return 12; } //LD (HL-), A
+		int opcode33() { SP++;                                                        return 8;  } //INC SP
+		int opcode34() { INCaddr(registers.HL);                                       return 12; } //INC (HL)
+		int opcode35() { DECaddr(registers.HL);                                       return 12; } //DEC (HL)
+		int opcode36() { writeByte(registers.HL, PC++);                               return 12; } //LD (HL), d8
+		int opcode37() { unkownOpcode();                                                         }
+		int opcode38() { unkownOpcode();                                                         }
+		int opcode39() { ADD_HL(SP);                                                  return 8;  } //ADD HL, SP
+		int opcode3A() { registers.A = readByte(registers.HL); registers.HL--;        return 8;  } //LD A, (HL-)
+		int opcode3B() { SP--;                                                        return 8;  } //DEC SP
+		int opcode3C() { INC(registers.A);                                            return 4;  } //INC A
+		int opcode3D() { DEC(registers.A);                                            return 4;  } //DEC A
+		int opcode3E() { unkownOpcode();                                                         }
+		int opcode3F() { unkownOpcode();                                                         }
 		int opcode40() { /* registers.B = registers.B; */                             return 4;  } //LD B, B
 		int opcode41() { registers.B = registers.C;                                   return 4;  } //LD B, C
 		int opcode42() { registers.B = registers.D;                                   return 4;  } //LD B, D
@@ -207,46 +207,46 @@ namespace GB {
 		int opcodeBD() { CP(registers.L);                                             return 4;  } //CP L
 		int opcodeBE() { CP(readByte(registers.HL));                                  return 8;  } //CP (HL)
 		int opcodeBF() { CP(registers.A);                                             return 4;  } //CP A
-		int opcodeC0() { unkownOpcode();                             }
-		int opcodeC1() { registers.BC = readShortStack(); return 12; } //POP BC
-		int opcodeC2() { unkownOpcode();                             }
-		int opcodeC3() { PC = readShort(PC);              return 16; } //JP a16
-		int opcodeC4() { unkownOpcode();                             }
-		int opcodeC5() { writeShortStack(registers.BC);           return 16; } //PUSH BC
-		int opcodeC6() { registers.A = addByte(registers.A, readByte(PC++));  return 8;  } //ADD A, d8
-		int opcodeC7() { unkownOpcode();                             }
-		int opcodeC8() { unkownOpcode();                             }
-		int opcodeC9() { unkownOpcode();                             }
-		int opcodeCA() { unkownOpcode();                             }
-		int opcodeCB() { unkownOpcode();                             }
-		int opcodeCC() { unkownOpcode();                             }
-		int opcodeCD() { unkownOpcode();                             }
-		int opcodeCE() { registers.A = ADC(registers.A, readByte(PC++));      return 8;  } //ADC A, d8
-		int opcodeCF() { unkownOpcode();                             }
-		int opcodeD0() { unkownOpcode();                             }
-		int opcodeD1() { registers.DE = readShortStack(); return 12; } //POP DE
-		int opcodeD2() { unkownOpcode();                             }
-		int opcodeD3() { unkownOpcode();                             }
-		int opcodeD4() { unkownOpcode();                             }
-		int opcodeD5() { writeShortStack(registers.DE);           return 16; } //PUSH DE
-		int opcodeD6() { unkownOpcode();                             }
-		int opcodeD7() { unkownOpcode();                             }
-		int opcodeD8() { unkownOpcode();                             }
-		int opcodeD9() { unkownOpcode();                             }
-		int opcodeDA() { unkownOpcode();                             }
-		int opcodeDB() { unkownOpcode();                             }
-		int opcodeDC() { unkownOpcode();                             }
-		int opcodeDD() { unkownOpcode();                             }
-		int opcodeDE() { registers.A = SBC(registers.A, readByte(PC++));      return 8;  } //SBC A, d8
-		int opcodeDF() { unkownOpcode();                             }
-		int opcodeE0() { writeByte(0xFF00 + readByte(PC++), registers.A); return 12; } //LDH (n), A
-		int opcodeE1() { registers.HL = readShortStack();  return 12; } //POP HL
-		int opcodeE2() { writeByte(0xFF00 + registers.C, registers.A);        return 8;  } //LD ($FF00 + C), A
-		int opcodeE3() { unkownOpcode();                             }
-		int opcodeE4() { unkownOpcode();                             }
-		int opcodeE5() { writeShortStack(registers.HL);           return 16; } //PUSH HL
-		int opcodeE6() { AND(readByte(PC++));             return 8;  } //AND d8
-		int opcodeE7() { unkownOpcode();                             }
+		int opcodeC0() { unkownOpcode();                                                         }
+		int opcodeC1() { registers.BC = readShortStack();                             return 12; } //POP BC
+		int opcodeC2() { unkownOpcode();                                                         }
+		int opcodeC3() { PC = readShort(PC);                                          return 16; } //JP a16
+		int opcodeC4() { unkownOpcode();                                                         }
+		int opcodeC5() { writeShortStack(registers.BC);                               return 16; } //PUSH BC
+		int opcodeC6() { registers.A = addByte(registers.A, readByte(PC++));          return 8;  } //ADD A, d8
+		int opcodeC7() { unkownOpcode();                                                         }
+		int opcodeC8() { unkownOpcode();                                                         }
+		int opcodeC9() { unkownOpcode();                                                         }
+		int opcodeCA() { unkownOpcode();                                                         }
+		int opcodeCB() { unkownOpcode();                                                         }
+		int opcodeCC() { unkownOpcode();                                                         }
+		int opcodeCD() { unkownOpcode();                                                         }
+		int opcodeCE() { registers.A = ADC(registers.A, readByte(PC++));              return 8;  } //ADC A, d8
+		int opcodeCF() { unkownOpcode();                                                         }
+		int opcodeD0() { unkownOpcode();                                                         }
+		int opcodeD1() { registers.DE = readShortStack();                             return 12; } //POP DE
+		int opcodeD2() { unkownOpcode();                                                         }
+		int opcodeD3() { unkownOpcode();                                                         }
+		int opcodeD4() { unkownOpcode();                                                         }
+		int opcodeD5() { writeShortStack(registers.DE);                               return 16; } //PUSH DE
+		int opcodeD6() { unkownOpcode();                                                         }
+		int opcodeD7() { unkownOpcode();                                                         }
+		int opcodeD8() { unkownOpcode();                                                         }
+		int opcodeD9() { unkownOpcode();                                                         }
+		int opcodeDA() { unkownOpcode();                                                         }
+		int opcodeDB() { unkownOpcode();                                                         }
+		int opcodeDC() { unkownOpcode();                                                         }
+		int opcodeDD() { unkownOpcode();                                                         }
+		int opcodeDE() { registers.A = SBC(registers.A, readByte(PC++));              return 8;  } //SBC A, d8
+		int opcodeDF() { unkownOpcode();                                                         }
+		int opcodeE0() { writeByte(0xFF00 + readByte(PC++), registers.A);             return 12; } //LDH (n), A
+		int opcodeE1() { registers.HL = readShortStack();                             return 12; } //POP HL
+		int opcodeE2() { writeByte(0xFF00 + registers.C, registers.A);                return 8;  } //LD ($FF00 + C), A
+		int opcodeE3() { unkownOpcode();                                                         }
+		int opcodeE4() { unkownOpcode();                                                         }
+		int opcodeE5() { writeShortStack(registers.HL);                               return 16; } //PUSH HL
+		int opcodeE6() { AND(readByte(PC++));                                         return 8;  } //AND d8
+		int opcodeE7() { unkownOpcode();                                                         }
 		int opcodeE8() {
 			//Same as opcode F8, but store result in SP instead
 			registers.F = 0;
@@ -260,21 +260,21 @@ namespace GB {
 			SP = static_cast<u16>(result);
 			return 16;
 		} //ADD SP, r8
-		int opcodeE9() { unkownOpcode();                             }
-		int opcodeEA() { writeShort(readShort(PC++), registers.A);  return 16; } //LD (nn), A
-		int opcodeEB() { unkownOpcode();                             }
-		int opcodeEC() { unkownOpcode();                             }
-		int opcodeED() { unkownOpcode();                             }
-		int opcodeEE() { XOR(readByte(PC++));             return 8;  } //XOR d8
-		int opcodeEF() { unkownOpcode();                             }
-		int opcodeF0() { registers.A = 0xFF00 + readByte(PC++);     return 12; } //LD A, ($FF00 + n)
-		int opcodeF1() { registers.AF = readShortStack();  return 12; } //POP AF
-		int opcodeF2() { registers.A = readByte(0xFF00 + registers.C);        return 8;  } //LD A, (C)
-		int opcodeF3() { unkownOpcode();                             }
-		int opcodeF4() { unkownOpcode();                             }
-		int opcodeF5() { writeShortStack(registers.AF);           return 16; } //PUSH AF
-		int opcodeF6() { OR(readByte(PC++));              return 8;  } //OR d8
-		int opcodeF7() { unkownOpcode();                             }
+		int opcodeE9() { unkownOpcode();                                                         }
+		int opcodeEA() { writeShort(readShort(PC++), registers.A);                    return 16; } //LD (nn), A
+		int opcodeEB() { unkownOpcode();                                                         }
+		int opcodeEC() { unkownOpcode();                                                         }
+		int opcodeED() { unkownOpcode();                                                         }
+		int opcodeEE() { XOR(readByte(PC++));                                         return 8;  } //XOR d8
+		int opcodeEF() { unkownOpcode();                                                         }
+		int opcodeF0() { registers.A = 0xFF00 + readByte(PC++);                       return 12; } //LD A, ($FF00 + n)
+		int opcodeF1() { registers.AF = readShortStack();                             return 12; } //POP AF
+		int opcodeF2() { registers.A = readByte(0xFF00 + registers.C);                return 8;  } //LD A, (C)
+		int opcodeF3() { unkownOpcode();                                                         }
+		int opcodeF4() { unkownOpcode();                                                         }
+		int opcodeF5() { writeShortStack(registers.AF);                               return 16; } //PUSH AF
+		int opcodeF6() { OR(readByte(PC++));                                          return 8;  } //OR d8
+		int opcodeF7() { unkownOpcode();                                                         }
 		int opcodeF8() {
 			//Put SP + n effective address into HL
 			registers.F = 0;
@@ -288,12 +288,12 @@ namespace GB {
 			registers.HL = static_cast<u16>(result);
 			return 12;
 		} //LDHL SP, n
-		int opcodeF9() { SP = registers.HL;                       return 8;  } //LD SP, HL
-		int opcodeFA() { registers.A = readShort(PC++);             return 16; } //LD A, (nn)
-		int opcodeFB() { unkownOpcode();                             }
-		int opcodeFC() { unkownOpcode();                             }
-		int opcodeFD() { unkownOpcode();                             }
-		int opcodeFE() { CP(readByte(PC++));              return 8;  } //CP d8
-		int opcodeFF() { unkownOpcode();                             }
+		int opcodeF9() { SP = registers.HL;                                           return 8;  } //LD SP, HL
+		int opcodeFA() { registers.A = readShort(PC++);                               return 16; } //LD A, (nn)
+		int opcodeFB() { unkownOpcode();                                                         }
+		int opcodeFC() { unkownOpcode();                                                         }
+		int opcodeFD() { unkownOpcode();                                                         }
+		int opcodeFE() { CP(readByte(PC++));                                          return 8;  } //CP d8
+		int opcodeFF() { unkownOpcode();                                                         }
 	}
 }
