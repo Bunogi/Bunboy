@@ -37,7 +37,6 @@ FuncPointer GB::CPU::opcodes[0x100] = {
 	&opcodeF8, &opcodeF9, &opcodeFA, &opcodeFB, &opcodeFC, &opcodeFD, &opcodeFE, &opcodeFF
 };
 
-u8 GB::CPU::A = 0, GB::CPU::B = 0, GB::CPU::C = 0, GB::CPU::D = 0, GB::CPU::E = 0, GB::CPU::F = 0, GB::CPU::H = 0, GB::CPU::L = 0;
 u16 GB::CPU::SP = 0, GB::CPU::PC = 0;
 u8 GB::RAM::memory[0x10000], GB::RAM::rom[0x200000], GB::RAM::ramBank[0x8000];
 
@@ -65,10 +64,10 @@ namespace GB {
 	void reset() {  //Run the gameboy powerup sequence
 		using namespace GB::CPU;
 		using namespace GB::RAM;
-		A = F = 0;
-		B = 0; C = 0x13; //BC = $0013
-		D = 0; E = 0xD8; //DE = $00D8
-		H = 1; L = 0x4D; //HL = $014D
+		registers.AF = 0;
+		registers.BC = 0x0013; 
+		registers.DE = 0x00D8;
+		registers.HL = 0x014D;
 		PC = 0x100;
 		SP = 0xFFFE;
 		std::memset(&memory, 0, sizeof memory);

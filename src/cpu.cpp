@@ -5,6 +5,7 @@
 
 namespace GB {
 	namespace CPU {
+		RegisterStruct registers;
 		int tick() {
 			u8 opcode = RAM::readByte(PC);
 			std::cout << std::hex << "PC: " << static_cast<unsigned>(PC) << " SP: " << static_cast<unsigned>(SP) << " Opcode: " << static_cast<unsigned>(opcode) << "\n";
@@ -12,17 +13,12 @@ namespace GB {
 			return opcodes[opcode]();
 		}
 
-		u16 AF() { return A << 8 | F; }
-		u16 BC() { return B << 8 | C; }
-		u16 DE() { return D << 8 | E; }
-		u16 HL() { return H << 8 | L; }
-
 		void setFlag(Flags flag) {
-			F |= flag;
+			registers.F |= flag;
 		}
 
 		u8 addByte(u8 x, u8 y) {
-			F = 0;
+			registers.F = 0;
 			unsigned result = x + y;
 			if (result == 0)
 				setFlag(Flags::Zero);
@@ -34,13 +30,13 @@ namespace GB {
 		}
 
 		u8 ADC(u8 x, u8 y) {
-			if (F & Flags::Carry)
+			if (registers.F & Flags::Carry)
 				x++;
 			return addByte(x, y);
 		}
 
 		u8 subByte(u8 x, u8 y) {
-			F = Flags::Subtract;
+			registers.F = Flags::Subtract;
 			unsigned result = x - y;
 
 			if (result == 0)
@@ -53,62 +49,57 @@ namespace GB {
 		}
 
 		u8 SBC(u8 x, u8 y) {
-			if (F & Flags::Carry)
+			if (registers.F & Flags::Carry)
 				y++;
 			return subByte(x, y);
 		}
 
 		void ADD_HL(u16 value) {
-			u8 zeroFlag = F & Flags::Zero;
-			F = 0;
-			unsigned result = HL() + value;
-			if ((HL() & 0x0F00) + (value & 0x0F00) > 0x0F00)
+			u8 zeroFlag = registers.F & Flags::Zero;
+			registers.F = 0;
+			unsigned result = registers.HL + value;
+			if ((registers.HL & 0x0F00) + (value & 0x0F00) > 0x0F00)
 				setFlag(Flags::HalfCarry);
 			if (result > 0xFFFF)
 				setFlag(Flags::Carry);
-			F |= zeroFlag;
-			set16Reg(H, L, static_cast<u16>(result));
-		}
-
-		void set16Reg(u8& regx, u8& regy, u16 value) {
-			regx = value >> 8;
-			regy = value & 0x00FF;
+			registers.F |= zeroFlag;
+			registers.HL = static_cast<u16>(result);
 		}
 
 		void AND(u8 value) {
-			A &= value;
-			F = Flags::HalfCarry;
-			if (A == 0)
+			registers.A &= value;
+			registers.F = Flags::HalfCarry;
+			if (registers.A == 0)
 				setFlag(Flags::Zero);
 		}
 
 		void OR(u8 value) {
-			A |= value;
-			F = 0;
-			if (A == 0)
+			registers.A |= value;
+			registers.F = 0;
+			if (registers.A == 0)
 				setFlag(Flags::Zero);
 		}
 
 		void XOR(u8 value) {
-			A ^= value;
-			F = 0;
-			if (A == 0)
+			registers.A ^= value;
+			registers.F = 0;
+				if (registers.A == 0)
 				setFlag(Flags::Zero);
 		}
 
 		void CP(u8 value) {
-			subByte(A, value);
+			subByte(registers.A, value);
 		}
 
 		void INC(u8& value) {
 			u8 result = value + 1;
-			u8 carryFlag = F & Flags::Carry;
-			F = 0;
+			u8 carryFlag = registers.F & Flags::Carry;
+			registers.F = 0;
 			if (result == 0)
 				setFlag(Flags::Zero);
 			if ((value & 0x0F) == 0x0F)
 				setFlag(Flags::HalfCarry);
-			F |= carryFlag;
+			registers.F |= carryFlag;
 			value = result;
 		}
 
@@ -126,19 +117,13 @@ namespace GB {
 
 		void DEC(u8& value) {
 			u8 result = value - 1;
-			u8 carryFlag = F & Flags::Carry;
-			F = Flags::Subtract;
+			u8 carryFlag = registers.F & Flags::Carry;
+			registers.F = Flags::Subtract;
 			if (result == 0)
 				setFlag(Flags::Zero);
 			if ((result & 0xF0) != (value & 0xF0))
 				setFlag(Flags::HalfCarry);
-			F |= carryFlag;
-		}
-
-		void DEC16(u8& regX, u8& regY) {
-			regX--;
-			if (regX == 0xFF) //regX was 0, underflow
-				regY--;
+			registers.F |= carryFlag;
 		}
 
 		void DECaddr(u16 address) {
